@@ -1,16 +1,24 @@
-import React, {/* useState, useEffect */ } from 'react'
-import { FaEdit } from 'react-icons/fa'
+import React, {useState, useEffect} from 'react'
+import { FaEdit, FaPlus } from 'react-icons/fa'
 import {Link} from 'react-router-dom'
 
 export default function User() {
 
-  const users = JSON.parse(localStorage.getItem('users'))
+  const [users] = useState(JSON.parse(localStorage.getItem('users')))
+
+  useEffect(() => {
+    document.title = 'Usuários'
+  })
 
   return (
     <div className="container">
       <div className="card">
         <h5 className="card-header blue white-text text-center">
-          <strong>Usuários</strong>
+          <strong>Usuários </strong>
+          <strong className="float-right" title="Adicionar Usuário">
+            <Link to="/usuarios/cadastrar"> <FaPlus color="white" /></Link> 
+          </strong>
+
         </h5>
         <div className="card-body p2">
           <table className="table">

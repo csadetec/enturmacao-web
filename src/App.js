@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
-import {loadUsers, loadProfiles} from './utils/load'
+import {loadUsers, loadProfiles, loadCourses} from './utils/load'
 import GlobalStyle from './styles/global'
 
 import Navbar from './components/Navbar'
@@ -22,6 +22,7 @@ function App() {
     if(token){
      loadUsers()
      loadProfiles()     
+     loadCourses()
     }
 
   },[token])
@@ -46,9 +47,8 @@ function App() {
             */}
             <Route exact={true} path='/usuarios' component={User} />
             <Route path='/usuarios/editar/:id' component={UserForm} />            
-              {/*}
             <Route path='/usuarios/cadastrar' component={UserForm} />
-        
+           {/*}
             <Route exact={true} path='/colaboradores' component={EmployeeList} />
 
             <Route exact={true} path='/perfis' component={ProfileList} />

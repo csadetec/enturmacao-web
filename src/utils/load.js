@@ -14,3 +14,8 @@ export async function loadProfiles(){
   
 }
 
+export async function loadCourses(){
+  const {data} = await api.get('courses')
+  localStorage.setItem('courses', JSON.stringify(data))
+}
+

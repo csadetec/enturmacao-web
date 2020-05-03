@@ -27,5 +27,11 @@ export default createGlobalStyle`
     transform: translateY(-35%);
   }
 
+  .select-form-control{
+    border: none;
+    border-bottom: 1px solid #4950575c;
+    border-radius: 0 ;
+  }
+
 
 `

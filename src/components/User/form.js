@@ -3,19 +3,24 @@ import api from '../../service/api'
 import logout from '../../utils/logout'
 import Loading from '../Loading'
 import { Link } from 'react-router-dom'
+import AlertModal from '../AlertModal'
+import { FaTrash } from 'react-icons/fa'
 
-export default function User(props) {
+function User(props) {
 
-  const [user, setUser] = useState({ email: '', password: '', name: '', profile_name: '' })
+  const [user, setUser] = useState({ email: '', password: '', name: '', profile_name: '', courses: [] })
   const [alert, setAlert] = useState({ message: '', color: '' })
   const [btn, setBtn] = useState({ label: 'Salvar', disabled: false })
   const [loading, setLoading] = useState(true)
   const [header, setHeader] = useState('Cadastrar Usuário')
+  const [modalShow, setModalShow] = useState(false)
+  //const [search, setSearch] = useState('Selecine um Curso')
 
   const profiles = JSON.parse(localStorage.getItem('profiles'))
-  const {id} = props.match.params
+  const courses = JSON.parse(localStorage.getItem('courses'))
+  const { id } = props.match.params
   useEffect(() => {
-  
+
     if (id === undefined) {
       document.title = 'Cadastrar Usuário'
       setLoading(false)
@@ -24,6 +29,7 @@ export default function User(props) {
 
     async function load() {
       const { data } = await api.get(`/users/${id}`)
+
       setUser(data)
       document.title = 'Editar Usuário'
       setHeader('Editar Usuário')
@@ -34,70 +40,130 @@ export default function User(props) {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    setBtn({label:'Salvando...', disabled:true})
-    try{
-      if(id){
-        const {status} = await api.put(`/users/${id}`, user)
+    setBtn({ label: 'Salvando...', disabled: true })
+    console.log(user)
+    try {
+      if (id) {
+        const { status } = await api.put(`/users/${id}`, user)
 
-        if(status === 200){
-          setAlert({message: 'Usuário Atualizado com Sucesso!', color: 'success'})
-          setBtn({label: 'Salvar', disabled:false})
+        if (status === 200) {
+          setAlert({ message: 'Usuário Atualizado com Sucesso!', color: 'success' })
+          setModalShow(true)
+          setBtn({ label: 'Salvar', disabled: false })
           console.log('update success')
 
         }
         return
       }
 
-      const {data} =  await api.post('/users', user)
-      const {message} = data
-      if(message){
-        setAlert({message, color: 'warning'})
+      const { data } = await api.post('/users', user)
+      const { message } = data
+      if (message) {
+        setAlert({ message, color: 'warning' })
       }
 
 
 
 
-    }catch(e){
+    } catch (e) {
       logout()
     }
 
   }
 
+  const handleDeleteCourse = (id) => {
+    console.log('delete ', id)
+    setUser({
+      ...user,
+      courses: user.courses.filter(r => {
+        return r.id !== id
+      })
+    })
+  }
+
+  const handleAddCourse = (id) => {
+    let myCourses = user.courses
+
+    let coursesVerify = myCourses.filter(r => {
+     // console.log(r)
+      return r.id === parseInt(id)
+    })
+
+
+
+    if (coursesVerify[0])
+      return
+
+    const newCourse = courses.filter(r => {
+      return r.id === parseInt(id)
+    })
+    myCourses = ([...myCourses, newCourse[0]])
+    setUser({
+      ...user,
+      courses: myCourses
+    })
+    /** */
+
+  }
   const updateField = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value })
   }
 
   return (
-
-    <div className="container">
+    <>
       {
         loading ?
           <Loading />
           :
-          <div className="row justify-content-center">
-            <div className="col-md-8">
-              <div className="card">
-                <h5 className="card-header blue white-text text-center">
-                  <strong>{header}</strong>
-                </h5>
-                <div className="card-body p2">
-                  <form className="text-center" onSubmit={handleSubmit}>
+          <div className="container-fluid">
 
-                    <div className="md-form mt-3">
+            <div className="row">
+              <div className="col-md-12">
+                <Link className="btn btn-outline-danger float-right" to='/usuarios'>Fechar</Link>
+
+                <button className="btn btn-outline-indigo float-right"  disabled={btn.disabled} onClick={handleSubmit}>{btn.label}</button>
+              </div>
+            </div>
+            <div className="row justify-content-center">
+              <div className="col-md-6">
+                <div className="card">
+                  <h5 className="card-header blue white-text text-center">
+                    <strong>{header}</strong>
+                  </h5>
+                  <div className="card-body p2">
+
+                    <div className="md-form mt-1">
                       <input type="email" name="email" id="email" className="form-control" value={user.email}
                         onChange={updateField} placeholder="Email" required />
                       {user.email &&
                         <label htmlFor="email" >E-mail</label>
                       }
                     </div>
-                    <div className="md-form mt-3">
+                    <div className="md-form form-row mt-2">
+                      <div className="col-md-6">
+                        <input type="email" name="email_sup" id="email_sup" className="form-control" value={user.email_sup}
+                          onChange={updateField} placeholder="E-mail Supervisão" required />
+                        {user.email_sup &&
+                          <label htmlFor="email" style={{ 'marginLeft': 5 }} >E-mail Supervisão</label>
+                        }
+                      </div>
+                      <div className="col-md-6">
+                        <input type="email" name="email_secretary" id="email_secretary" className="form-control" value={user.email_secretary}
+                          onChange={updateField} placeholder="E-mail Secretaria" required />
+                        {user.email &&
+                          <label htmlFor="email_secretary" style={{ 'marginLeft': 5 }} >E-mail Secretaria</label>
+                        }
+                      </div>
+                    </div>
+
+                    <div className="md-form ">
                       <input type="password" name="password" id="password" className="form-control" value={user.password}
                         onChange={updateField} placeholder="Password" />
                       {user.password &&
                         <label htmlFor="email" >Password</label>
                       }
                     </div>
-                    <div className="md-form mt-3">
+                    <div className="md-form ">
                       <input type="text" name="name" id="name" className="form-control" value={user.name}
                         onChange={updateField} placeholder="Name" required />
                       {user.name &&
@@ -105,29 +171,65 @@ export default function User(props) {
                       }
                     </div>
 
-                    <div className="form-row">
-                      <select value={user.profile_name} className="form-control"
+                    <div className="md-form">
+                      <select value={user.profile_name} className="form-control select-form-control"
                         onChange={updateField} name="profile_name" required>
                         <option value="">Selecione o Perfil</option>
                         {profiles.map(r =>
                           <option key={r.id} value={r.name}>{r.name}</option>
                         )}
                       </select>
+
                     </div>
+                  </div>
 
-                    <button className="btn btn-outline-indigo" type="submit" disabled={btn.disabled}>{btn.label}</button>
-                    <Link className="btn btn-outline-danger" to='/usuarios'>Fechar</Link>
-
-
-                  </form>
                 </div>
 
               </div>
+              <div className="col-md-6">
+                <div className="card">
+                  <h5 className="card-header blue white-text text-center">
+                    <strong>Cursos</strong>
+                  </h5>
+                  <div className="card-body p2">
+                    <div className="md-form mt-0">
+                      <select className="form-control select-form-control"
+                        onChange={e => handleAddCourse(e.target.value)} value="" name="profile_name" required>
+                        <option value="">Selecione o Curso</option>
+                        {courses.map(r =>
+                          <option key={r.id} value={r.id}>{r.unity} | {r.name}</option>
+                        )}
+                      </select>
 
+                    </div>
+                    <table className="table">
+                      <tbody>
+                        {user.courses.map(r =>
+                          <tr key={r.id}>
+                            <td>{r.unity}</td>
+                            <td>{r.name}</td>
+                            <td title="Excluir curso" style={{ 'cursor': 'pointer' }} onClick={() => handleDeleteCourse(r.id)}>
+                              <FaTrash />
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <AlertModal
+              show={modalShow}
+              color={alert.color}
+              message={alert.message}
+              onHide={() => setModalShow(false)}
+            />
           </div>
       }
-    </div>
-
+    </>
   )
 }
+
+export default User
