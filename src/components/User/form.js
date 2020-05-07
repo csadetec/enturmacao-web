@@ -8,14 +8,12 @@ import { FaTrash } from 'react-icons/fa'
 
 function User(props) {
 
-  const [user, setUser] = useState({ email: '', password: '', name: '', profile_name: '', courses: [] })
+  const [user, setUser] = useState({ email: '', password: '', name: '', profile_name: '',  courses: [], coursesDelete:[] })
   const [alert, setAlert] = useState({ message: '', color: '' })
   const [btn, setBtn] = useState({ label: 'Salvar', disabled: false })
   const [loading, setLoading] = useState(true)
   const [header, setHeader] = useState('Cadastrar Usuário')
   const [modalShow, setModalShow] = useState(false)
-  //const [search, setSearch] = useState('Selecine um Curso')
-
   const profiles = JSON.parse(localStorage.getItem('profiles'))
   const courses = JSON.parse(localStorage.getItem('courses'))
   const { id } = props.match.params
@@ -41,22 +39,26 @@ function User(props) {
   async function handleSubmit(e) {
     e.preventDefault()
     setBtn({ label: 'Salvando...', disabled: true })
-    console.log(user)
+
     try {
       if (id) {
-        const { status } = await api.put(`/users/${id}`, user)
+        const { status, data } = await api.put(`/users/${id}`, user)
 
         if (status === 200) {
+          console.log(data)
+          /*
           setAlert({ message: 'Usuário Atualizado com Sucesso!', color: 'success' })
           setModalShow(true)
+           /** */
           setBtn({ label: 'Salvar', disabled: false })
-          console.log('update success')
-
+         
+       
         }
         return
       }
 
       const { data } = await api.post('/users', user)
+   
       const { message } = data
       if (message) {
         setAlert({ message, color: 'warning' })
@@ -68,39 +70,29 @@ function User(props) {
     } catch (e) {
       logout()
     }
-
+   
   }
-
   const handleDeleteCourse = (id) => {
-    console.log('delete ', id)
+    
     setUser({
       ...user,
-      courses: user.courses.filter(r => {
-        return r.id !== id
-      })
+      courses: user.courses.filter(r =>  r.id !== id),
+      coursesDelete:[...user.coursesDelete, user.courses.find((r) => r.id === parseInt(id))]   
     })
+    /** */
+   
   }
-
   const handleAddCourse = (id) => {
-    let myCourses = user.courses
+    
+    const courseVerify = user.courses.find( r => r.id === parseInt(id))
 
-    let coursesVerify = myCourses.filter(r => {
-     // console.log(r)
-      return r.id === parseInt(id)
-    })
+    if(courseVerify)
+      return;
 
-
-
-    if (coursesVerify[0])
-      return
-
-    const newCourse = courses.filter(r => {
-      return r.id === parseInt(id)
-    })
-    myCourses = ([...myCourses, newCourse[0]])
     setUser({
       ...user,
-      courses: myCourses
+      courses: [...user.courses, courses.find(r => r.id === parseInt(id))],
+      coursesDelete: user.coursesDelete.filter(r => r.id !== id )
     })
     /** */
 
