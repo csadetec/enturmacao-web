@@ -11,8 +11,8 @@ import Login from './components/Login'
 
 import Course from './components/Course'
 
-import User from './components/User'
-import UserForm from './components/User/form'
+import User from './pages/User'
+import UserForm from './pages/User/form'
 
 function App() {
 

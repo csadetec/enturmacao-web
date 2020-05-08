@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import api from '../../service/api'
 import logout from '../../utils/logout'
-import Loading from '../Loading'
+import Loading from '../../components/Loading'
 import { Link } from 'react-router-dom'
-import AlertModal from '../AlertModal'
+import AlertModal from '../../components/AlertModal'
 import { FaTrash } from 'react-icons/fa'
 
 function User(props) {
@@ -24,10 +24,9 @@ function User(props) {
       setLoading(false)
       return
     }
-
     async function load() {
       const { data } = await api.get(`/users/${id}`)
-
+  
       setUser(data)
       document.title = 'Editar Usuário'
       setHeader('Editar Usuário')
@@ -36,17 +35,19 @@ function User(props) {
     load()
   }, [id])
 
+
   async function handleSubmit(e) {
     e.preventDefault()
     setBtn({ label: 'Salvando...', disabled: true })
 
     try {
       if (id) {
-        const { status, data } = await api.put(`/users/${id}`, user)
+        const { status } = await api.put(`/users/${id}`, user)
+        //console.log(user)
+        console.log('courses ', user.courses)
 
         if (status === 200) {
-          console.log(data)
-          /*
+    
           setAlert({ message: 'Usuário Atualizado com Sucesso!', color: 'success' })
           setModalShow(true)
            /** */
@@ -79,7 +80,6 @@ function User(props) {
       courses: user.courses.filter(r =>  r.id !== id),
       coursesDelete:[...user.coursesDelete, user.courses.find((r) => r.id === parseInt(id))]   
     })
-    /** */
    
   }
   const handleAddCourse = (id) => {
@@ -94,7 +94,6 @@ function User(props) {
       courses: [...user.courses, courses.find(r => r.id === parseInt(id))],
       coursesDelete: user.coursesDelete.filter(r => r.id !== id )
     })
-    /** */
 
   }
   const updateField = (e) => {
@@ -194,7 +193,7 @@ function User(props) {
                       </select>
 
                     </div>
-                    <table className="table">
+                    <table className="my-table">
                       <tbody>
                         {user.courses.map(r =>
                           <tr key={r.id}>

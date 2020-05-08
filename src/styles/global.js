@@ -11,15 +11,23 @@ export default createGlobalStyle`
 
   html, body, #root{
     height: 100%;
+   
+  }
+  .container {
+    min-height: 90%;
+    border: 5px solid black;
+    margin-bottom: 1px;
+
+
+  }
+  .container-fluid{
+    min-height: 100%;
+    border: 5px solid black;
+
   }
 
-  body{
-    /*
-    font: 10px 'Roboto', sans-serif;
-    background: #ecf1f8;
-    color: #333;
-    -webkit-font-smoothing: antialiased !important;
-    /** */
+  body::-webkit-scrollbar{
+    display:none;
 
   }
   .md-form label {
@@ -32,6 +40,6 @@ export default createGlobalStyle`
     border-bottom: 1px solid #4950575c;
     border-radius: 0 ;
   }
-
+  
 
 `
