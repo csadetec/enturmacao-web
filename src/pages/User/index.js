@@ -1,14 +1,26 @@
 import React, {useState, useEffect} from 'react'
 import { FaEdit, FaPlus } from 'react-icons/fa'
 import {Link} from 'react-router-dom'
+import api from '../../service/api'
 
 export default function User() {
 
-  const [users] = useState(JSON.parse(localStorage.getItem('users')))
+  const [users, setUser] = useState(JSON.parse(localStorage.getItem('users')))
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     document.title = 'Usuários'
   })
+
+  async function handleSearch(e){
+    setSearch(e.target.value)
+    if(search.length > 2){
+      const {data } = await api.get(`/users/filter/${search}`)
+      setUser(data)
+      return 
+    }
+    setUser(JSON.parse(localStorage.getItem('users')))
+  }
 
   return (
     <div className="container">
@@ -21,6 +33,7 @@ export default function User() {
 
         </h5>
         <div className="card-body p2">
+            <input type="text" className="form-control py-4" placeholder="Pesquisar Usuário" value={search} name="search" onChange={handleSearch}/>
           <table className="table">
             <thead>
               <tr>

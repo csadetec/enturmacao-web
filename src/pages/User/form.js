@@ -193,7 +193,7 @@ function User(props) {
                       </select>
 
                     </div>
-                    <table className="my-table">
+                    <table className="table">
                       <tbody>
                         {user.courses.map(r =>
                           <tr key={r.id}>

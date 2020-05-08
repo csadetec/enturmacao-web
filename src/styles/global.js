@@ -15,14 +15,14 @@ export default createGlobalStyle`
   }
   .container {
     min-height: 90%;
-    border: 5px solid black;
+  
     margin-bottom: 1px;
 
 
   }
   .container-fluid{
     min-height: 100%;
-    border: 5px solid black;
+    
 
   }
 
@@ -40,6 +40,5 @@ export default createGlobalStyle`
     border-bottom: 1px solid #4950575c;
     border-radius: 0 ;
   }
-  
-
+ 
 `
