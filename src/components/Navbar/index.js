@@ -5,14 +5,7 @@ import {Container} from './style'
 
 const Navbar = () => {
   const [home, setHome] = useState('nav-item active')
-
-  const [curso, setCurso] = useState('nav-item')
-  const [usuarios, setUsuarios] = useState('nav-item')
-  //const [teste, setTeste] = useState('nav-item')
-  /*
-  const [usuarios, setUsuarios] = useState('nav-item')
-  const [colaboradores, setColaboradores] = useState('nav-item')
-  /** */
+  const [meuCurso, setMeuCurso] = useState('nav-item active')
   const [logged] = useState(JSON.parse(localStorage.getItem('logged')))
 
   useEffect(() => {
@@ -28,24 +21,14 @@ const Navbar = () => {
 
   const handleActive = () => {
     setHome('nav-item')
-    setCurso('nav-item')
-    setUsuarios('nav-item')
-    //setTeste('nav-item')
+    setMeuCurso('nav-item')
    
     let pathname = window.location.pathname
-    /// console.log(pathname)
-    if (pathname === '/curso')
-      return setCurso('nav-item active')
-    
-    if (pathname === '/usuarios')
-      return setUsuarios('nav-item active')
-
-    if(pathname === '/home')
+    //console.log(pathname)
+    if(pathname === '/home' || pathname === '/')
       return setHome('nav-item active')
-    /*
-    if(pathname === '/teste')
-      return setTeste('nav-item active')
-    /** */
+    return setMeuCurso('nav-item active')
+   
   }
   return (
     <Container>
@@ -60,27 +43,24 @@ const Navbar = () => {
               <Link className="nav-link" to="/home">Home</Link>
             </li>
 
-            <li className={curso}>
-              <Link className="nav-link" to="/curso">Curso</Link>
-            </li>
-            <li className={usuarios}>
-              <Link className="nav-link" to="/usuarios">Usuários</Link>
-            </li>
-            {/*}
-            <li className={teste}>
-              <Link className="nav-link" to="/teste">teste</Link>
-            </li>
-            */}
+            <li className={`${meuCurso} dropdown`}>
+              <div className="nav-link dropdown-toggle " id="navbarDropdownMenuLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false" style={{cursor:'pointer'}}  >Meus Cursos</div>
+              <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                {logged.courses.map( r => 
+                  <Link className="dropdown-item" to={`/meucurso/${r.codcur}/${r.codper}/${r.shift}`}  key={r.id}>{r.name} | {r.unity}</Link>
+                )}  
+              </div>
+            </li>   
+
             <li className="nav-item dropdown">
               <div className="nav-link dropdown-toggle " id="navbarDropdownMenuLink" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false" style={{cursor:'pointer'}}  >{logged.name}</div>
               <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
               
                 <Link className="dropdown-item" to="/usuarios" onClick={handleActive}  >Usuários</Link>
+                <Link className="dropdown-item" to="/usuarios" onClick={handleActive}  >Cursos</Link>
             
-                {/*}
-                <Link className="dropdown-item" to="/perfis" onClick={handleActive}  >Perfis</Link>
-                */}
                 <a className="dropdown-item" href="/" onClick={handleLogout}>Sair</a>
               </div>
             </li>

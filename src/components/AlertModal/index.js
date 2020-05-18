@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Button, Modal } from 'react-bootstrap'
+import {FaCheck, FaRegBell} from 'react-icons/fa'
 
 function AlertModal(props) {
 
@@ -24,7 +25,14 @@ function AlertModal(props) {
         <Modal.Title style={{ fontSize: '1.15em' }}>{props.message}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ textAlign: 'center' }} >
+        {/*}
         <i className="fas fa-check fa-4x mb-3 animated rotateIn" style={{ color: color() }}></i>
+      */}
+        {props.color === 'success' ?
+          <FaCheck className="fa-4x animated rotateIn" style={{color: color()}} />
+          :
+          <FaRegBell className="fa-4x animated rotateIn" style={{color: color()}} />
+        }
         <p style={{ color: '#616161' }}>
           {props.field && props.field(r =>
 

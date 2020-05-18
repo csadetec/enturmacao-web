@@ -10,9 +10,14 @@ import Home from './components/Home'
 import Login from './components/Login'
 
 import Course from './components/Course'
+import CourseForm from './components/Course/form';
 
-import User from './pages/User'
-import UserForm from './pages/User/form'
+import MyCourse from './components/MyCourse'
+
+import User from './components/User'
+import UserForm from './components/User/form'
+
+
 
 function App() {
 
@@ -36,29 +41,20 @@ function App() {
           <Switch>
             <Route exact={true} path='/' component={Home} />
             <Route path='/home' component={Home} />
-            
-            <Route exact={true} path='/curso' component={Course}/>
-            {/*}
-            <Route path='/servicos/editar/:id' component={ServiceForm}/>
-            <Route path='/servicos/cadastrar' component={ServiceForm}/>
-            <Route path='/servicos/teste' component={ServiceForm}/>
-                        
-            <Route exact={true} path='/relatorios' component={ReportList} />
-            */}
+
+            <Route path='/meucurso/:codcur/:codper/:shift' component={MyCourse} />
+
+            <Route exact={true} path='/cursos' component={Course}/>
+            <Route path='/cursos/editar/:codcur/:codper' component={CourseForm} />            
+            <Route path='/cursos/cadastrar' component={CourseForm} />
+        
             <Route exact={true} path='/usuarios' component={User} />
             <Route path='/usuarios/editar/:id' component={UserForm} />            
             <Route path='/usuarios/cadastrar' component={UserForm} />
-           {/*}
-            <Route exact={true} path='/colaboradores' component={EmployeeList} />
-
-            <Route exact={true} path='/perfis' component={ProfileList} />
-            <Route path='/perfis/editar/:id' component={ProfileForm} />
-            <Route path='/perfis/cadastrar' component={ProfileForm} />
-            
-            <Route exact={true} path='/teste' component={Teste} />
+         
             
 
-            {/*<Redirect path='*' to='/' />*/}
+            <Redirect path='*' to='/' />
 
           </Switch>
     

@@ -23,7 +23,7 @@ export default function User() {
   }
 
   return (
-    <div className="container">
+    <div className="container mt-4">
       <div className="card">
         <h5 className="card-header blue white-text text-center">
           <strong>Usuários </strong>
@@ -49,7 +49,7 @@ export default function User() {
                   <td>{r.name}</td>
                   <td>{r.email}</td>
                   <td>{r.profile_name}</td>
-                  <td><Link to={`/usuarios/editar/${r.id}`}><FaEdit /></Link></td>
+                  <td><Link title="Editar Usuário" to={`/usuarios/editar/${r.id}`}><FaEdit /></Link></td>
                 </tr>
               )}
             </tbody>
