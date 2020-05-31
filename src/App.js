@@ -10,12 +10,12 @@ import Home from './components/Home'
 import Login from './components/Login'
 
 import Course from './components/Course'
-import CourseForm from './components/Course/form';
+import CourseForm from './components/CourseForm';
 
 import MyCourse from './components/MyCourse'
 
 import User from './components/User'
-import UserForm from './components/User/form'
+import UserForm from './components/UserForm'
 
 
 
@@ -42,10 +42,10 @@ function App() {
             <Route exact={true} path='/' component={Home} />
             <Route path='/home' component={Home} />
 
-            <Route path='/meucurso/:codcur/:codper/:shift' component={MyCourse} />
+            <Route path='/meucurso' component={MyCourse} />
 
             <Route exact={true} path='/cursos' component={Course}/>
-            <Route path='/cursos/editar/:codcur/:codper' component={CourseForm} />            
+            <Route path='/cursos/editar/:id' component={CourseForm} />            
             <Route path='/cursos/cadastrar' component={CourseForm} />
         
             <Route exact={true} path='/usuarios' component={User} />

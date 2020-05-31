@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import api from '../../service/api'
-import logout from '../../utils/logout'
-import Loading from '../Loading'
+import api from '../service/api'
+import logout from '../utils/logout'
+import Loading from './Loading'
 import { Link, useHistory } from 'react-router-dom'
-import AlertModal from '../AlertModal'
+import AlertModal from './AlertModal'
 import { FaTrash } from 'react-icons/fa'
-import {loadUsers} from '../../utils/load'
+import {loadUsers} from '../utils/load'
 
 function User(props) {
 

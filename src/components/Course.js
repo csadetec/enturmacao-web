@@ -44,7 +44,7 @@ function Course() {
                   <td>{r.shift}</td>
                   <td>{r.codcur}</td>
                   <td>{r.codper}</td>
-                  <td><Link title="Editar Usuário" to={`/cursos/editar/${r.codcur}/${r.codper}/${r.shift}`}><FaEdit /></Link></td>
+                  <td><Link title="Editar Usuário" to={`/cursos/editar/${r.id}`}><FaEdit /></Link></td>
                 </tr>
               )}
             </tbody>

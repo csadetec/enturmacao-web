@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import styled from 'styled-components' 
 import { Link } from 'react-router-dom'
 
-import {Container} from './style'
+const Container = styled.div`
+  padding-bottom:60px;
+`
 
 const Navbar = () => {
   const [home, setHome] = useState('nav-item active')
@@ -27,7 +30,8 @@ const Navbar = () => {
     //console.log(pathname)
     if(pathname === '/home' || pathname === '/')
       return setHome('nav-item active')
-    return setMeuCurso('nav-item active')
+    if(pathname === '/meucurso')
+      return setMeuCurso('nav-item active')
    
   }
   return (
@@ -42,16 +46,9 @@ const Navbar = () => {
             <li className={home}>
               <Link className="nav-link" to="/home">Home</Link>
             </li>
-
-            <li className={`${meuCurso} dropdown`}>
-              <div className="nav-link dropdown-toggle " id="navbarDropdownMenuLink" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false" style={{cursor:'pointer'}}  >Meus Cursos</div>
-              <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                {logged.courses.map( r => 
-                  <Link className="dropdown-item" to={`/meucurso/${r.codcur}/${r.codper}/${r.shift}`}  key={r.id}>{r.name} | {r.unity}</Link>
-                )}  
-              </div>
-            </li>   
+            <li className={meuCurso}>
+              <Link className="nav-link" to="/meucurso">Meu Curso</Link>
+            </li>
 
             <li className="nav-item dropdown">
               <div className="nav-link dropdown-toggle " id="navbarDropdownMenuLink" data-toggle="dropdown"
@@ -59,7 +56,7 @@ const Navbar = () => {
               <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
               
                 <Link className="dropdown-item" to="/usuarios" onClick={handleActive}  >Usuários</Link>
-                <Link className="dropdown-item" to="/usuarios" onClick={handleActive}  >Cursos</Link>
+                <Link className="dropdown-item" to="/cursos" onClick={handleActive}  >Cursos</Link>
             
                 <a className="dropdown-item" href="/" onClick={handleLogout}>Sair</a>
               </div>

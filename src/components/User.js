@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { FaEdit, FaPlus } from 'react-icons/fa'
 import {Link} from 'react-router-dom'
-import api from '../../service/api'
+import api from '../service/api'
 
 export default function User() {
 

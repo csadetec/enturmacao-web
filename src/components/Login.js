@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import api from '../../service/api'
+import api from '../service/api'
 
-import Alert from '../Alert'
+import Alert from './Alert'
 
 function Login() {
   const [loggin, setLoggin] = useState({

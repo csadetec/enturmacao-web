@@ -1,35 +1,37 @@
 import React, { useState, useEffect } from 'react'
-import api from '../../service/api'
-import logout from '../../utils/logout'
-import Loading from '../Loading'
+import api from '../service/api'
+import logout from '../utils/logout'
+import Loading from './Loading'
 import { Link, useHistory } from 'react-router-dom'
-import AlertModal from '../AlertModal'
-import { loadCourses } from '../../utils/load'
+import AlertModal from './AlertModal'
+import { loadCourses } from '../utils/load'
 
 
 function Course(props) {
 
-  const [course, setCourse] = useState({  name: '', unity: '', codcur: '', codper: '' })
+ // const [course, setCourse] = useState({  name: '', shift:'', unity: '', codcur: '', codper: '' })
+  const [course, setCourse] = useState({  name: 'EF 5º Ano', shift:'TARDE', unity: 'CONTAGEM', codcur: '22', codper: '5' })
 
   const [alert, setAlert] = useState({ message: '', color: '' })
   const [btn, setBtn] = useState({ label: 'Salvar', disabled: false })
   const [loading, setLoading] = useState(true)
   const [header, setHeader] = useState('Cadastrar Curso')
   const [modalShow, setModalShow] = useState(false)
-  const { codcur, codper, shift } = props.match.params
+  const { id } = props.match.params
   const history = useHistory()
 
   useEffect(()=> {
-
+    //console.log(props.match.params)
     window.scrollTo(0, 0)
-    if (codcur === undefined || codper === undefined || shift === undefined) {
+    if (id === undefined) {
       document.title = 'Cadastrar Curso'
       setLoading(false)
       return
     }
     async function load() {
-      const { data } = await api.get(`/courses/${codcur}/${codper}/${shift}`)
-
+      const { data } = await api.get(`/courses/${id}`)
+      //console.log(data)
+      //console.log('id ', id)
       setCourse(data)
       document.title = 'Editar Curso'
       setHeader('Editar Curso')
@@ -38,19 +40,19 @@ function Course(props) {
 
     load()
     
-  }, [codcur, codper, shift])
+  }, [id])
 
   async function handleSubmit(e) {
     e.preventDefault()
     setBtn({ label: 'Salvando...', disabled: true })
-    //console.log(course)
+   
     
     try {
-      if (codcur === undefined || codper === undefined || shift === undefined) {
-        const { status } = await api.put(`/courses/${codcur}/${codper}/${shift}`, course)
-
+      if (id) {
+        const { status, data } = await api.put(`/courses/${id}`, course)
+        console.log(data)
         if (status === 200) {
-
+          
           setAlert({ message: 'Usuário Atualizado com Sucesso!', color: 'success' })
           setModalShow(true)
           setBtn({ label: 'Salvar', disabled: false })
@@ -62,7 +64,6 @@ function Course(props) {
       }
 
       const { data } = await api.post('/courses', course)
-      //console.log(data)
       const { message } = data
       if (message) {
         setAlert({ message, color: 'warning' })
@@ -74,7 +75,7 @@ function Course(props) {
       setAlert({ message: 'Cadastrado com Sucesso', color: 'success' })
       setModalShow(true)
       setBtn({ label: 'Salvar', disabled: false })
-      history.push(`/usuarios/editar/${data.id}`)
+      history.push(`/cursos/editar/${data.id}`)
 
     } catch (e) {
       logout()
